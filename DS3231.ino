@@ -1,5 +1,5 @@
 /*
- *Libreria RTCLIB
+ *  Libreria RTCLIB
  * 
  */
 #include <Wire.h>
@@ -8,13 +8,16 @@
 
 RTC_DS3231 RTC;
 
+const int hora=13;
+const int minutos=40;
+
 void setup()
 {
     Serial.begin(9600);
     Wire.begin();
     RTC.begin();
 
-    RTC.adjust(DateTime(__DATE__, __TIME__));
+    RTC.adjust(DateTime(__DATE__, __TIME__));//Ajustar hora comentar despues de subir el codigo
     if (!RTC.isrunning())
     {
         Serial.println("RTC is NOT running!");
@@ -22,35 +25,39 @@ void setup()
         RTC.adjust(DateTime(__DATE__, __TIME__));
     }
     DateTime now = RTC.now();
-    RTC.setAlarm1Simple(21, 58);
+    RTC.setAlarm1Simple(hora, minutos);
     RTC.turnOnAlarm(1);
     if (RTC.checkAlarmEnabled(1))
     {
-        Serial.println("Alarm Enabled");
+        Serial.println("Alarma activada");
     }
 }
 
 void loop()
 {
     DateTime now = RTC.now();
-
-    Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(' ');
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
+    printDate(now);
+    
 
     if (RTC.checkIfAlarm(1))
     {
-        Serial.println("Es la hora!");
+        Serial.println("Despierta es hora");
     }
     Serial.println();
     delay(1000);
+}
+void printDate(DateTime now)
+{
+  Serial.print(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);
+  Serial.print(' ');
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);
+  Serial.println();
 }
