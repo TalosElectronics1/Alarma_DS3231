@@ -1,5 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "port": "COM37",
-    "sketch": "DS3231.ino"
-}
